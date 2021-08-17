@@ -71,15 +71,14 @@ static Rule rules[] = {
 static Key nkeys[] = {
 	/* keyval                      function      arg */
 	{ {.ch = 'j'},                 mv_ver,       {.i = -1}       },
-	{ {.key = TB_KEY_ARROW_DOWN},  mv_ver,       {.i = -1}       },
 	{ {.ch = 'k'},                 mv_ver,       {.i = +1}       },
-	{ {.key = TB_KEY_ARROW_UP},    mv_ver,       {.i = +1}       },
 	{ {.key = TB_KEY_CTRL_U},      mv_ver,       {.i = +3}       },
 	{ {.key = TB_KEY_CTRL_D},      mv_ver,       {.i = -3}       },
+	{ {.key = TB_KEY_PGUP },       mv_ver,       {.i = +10}      },
+	{ {.key = TB_KEY_PGDN },       mv_ver,       {.i = -10}      },
+	{ {.key = TB_KEY_ENTER},       mvfwd,        {.i = 0}        },
 	{ {.ch = 'l'},                 mvfwd,        {.i = 0}        },
-	{ {.key = TB_KEY_ARROW_RIGHT}, mvfwd,        {.i = 0}        },
 	{ {.ch = 'h'},                 mvbk,         {.i = 0}        },
-	{ {.key = TB_KEY_ARROW_LEFT},  mvbk,         {.i = 0}        },
 	{ {.ch = 'g'},                 mvtop,        {.i = 0}        },
 	{ {.ch = 'G'},                 mvbtm,        {.i = 0}        },
 	{ {.ch = 'n'},                 crnf,         {0}             },
@@ -102,9 +101,7 @@ static Key nkeys[] = {
 static Key vkeys[] = {
 	/* keyval                      function         arg */
 	{ {.ch = 'j'},                 seldwn,          {.i = -1}      },
-	{ {.key = TB_KEY_ARROW_DOWN},  seldwn,          {.i = -1}      },
 	{ {.ch = 'k'},                 selup,           {.i = +1}      },
-	{ {.key = TB_KEY_ARROW_UP},    selup,           {.i = +1}      },
 	{ {.ch = 'a'},                 selall,          {0}            },
 	{ {.ch = 'y'},                 selynk,          {0}            },
 	{ {.ch = 'd'},                 seldel,          {.v = delconf} },
