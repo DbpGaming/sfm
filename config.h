@@ -37,34 +37,32 @@ static const size_t delconf_len = LEN(delconf);
 static const char root[]   = "/";
 
 /* software */
-static const char *mpv[]          = { "mpv", "--fullscreen" };
-static const char *sxiv[]         = { "sxiv" };
-static const char *surf[]         = { "surf" };
-static const char *mupdf[]        = { "mupdf", "-I" };
-static const char *libreoffice[]  = { "libreoffice" };
-static const char *gimp[]         = { "gimp" };
-static const char *r2[]           = { "r2", "-c", "vv" };
+static const char *videoplayer[]                    = { "mpv" };
+static const char *audioplayer[]                    = { "mpv" };
+static const char *imageviewer[]                   = { "sxiv" };
+static const char *browser[]                      = { "links" };
+static const char *bookreader[]                 = { "zathura" };
+static const char *nesemu[]                       = { "mesen" };
+static const char *snesemu[]                      = { "bsnes" };
+static const char *usereditor[]                     = { "vis" };
 
 /* extensions*/
-static const char *images[]    = { "bmp", "jpg", "jpeg", "png", "gif", "xpm" };
-static const char *web[]       = { "htm", "html" };
-static const char *pdf[]       = { "epub", "pdf" };
-static const char *arts[]      = { "xcf" };
-static const char *obj[]       = { "o", "a", "so" };
-static const char *videos[]    = { "avi", "flv", "wav", "webm", "wma", "wmv",
-				   "m2v", "m4a", "m4v", "mkv", "mov", "mp3",
-				   "mp4", "mpeg", "mpg" };
-static const char *documents[] = { "odt", "doc", "docx", "xls", "xlsx", "odp",
-				   "ods", "pptx", "odg" };
+static const char *image[]                   = { "jpg", "png" };
+static const char *web[]                    = { "htm", "html" };
+static const char *book[     = { "epub", "pdf", "cbz", "djvu" };
+static const char *video[]            = { "m4v", "mkv", "mp4" };
+static const char *audio[]                   = { "mp3", "flac"};
+static const char *nes[]                            = { "nes" };
+static const char *snes[]                           = { "sfc" };
 
 static Rule rules[] = {
-	{videos,    LEN(videos),    mpv,         LEN(mpv)         },
-	{images,    LEN(images),    sxiv,        LEN(sxiv)        },
-	{web,       LEN(web),       surf,        LEN(surf)        },
-	{pdf,       LEN(pdf),       mupdf,       LEN(mupdf)       },
-	{documents, LEN(documents), libreoffice, LEN(libreoffice) },
-	{arts,      LEN(arts),      gimp,        LEN(gimp)        },
-	{obj,       LEN(obj),       r2,          LEN(r2)          },
+	{video,     LEN(video),     videoplayer, LEN(videoplayer) },
+	{audio,     LEN(audio),     audioplayer, LEN(audioplayer) },
+	{image,     LEN(image),     imageviewer, LEN(imageviewer) },
+	{web,       LEN(web),       browser,     LEN(browser)     },
+	{book,      LEN(book),      bookreader,  LEN(bookreader)  },
+	{nes,       LEN(nes),       nesemu,      LEN(nesemu)      },
+	{snes,      LEN(snes),      snesemu,     LEN(snesemu)     },
 };
 
 /* normal keys */
