@@ -49,7 +49,7 @@ static const char *usereditor[]                     = { "vis" };
 /* extensions*/
 static const char *image[]                   = { "jpg", "png" };
 static const char *web[]                    = { "htm", "html" };
-static const char *book[     = { "epub", "pdf", "cbz", "djvu" };
+static const char *book[]    = { "epub", "pdf", "cbz", "djvu" };
 static const char *video[]            = { "m4v", "mkv", "mp4" };
 static const char *audio[]                   = { "mp3", "flac"};
 static const char *nes[]                            = { "nes" };
