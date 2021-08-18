@@ -82,13 +82,6 @@ typedef struct {
 	int event_fd;
 } Pane;
 
-typedef struct {
-	const char **ext;
-	size_t exlen;
-	const void *v;
-	size_t vlen;
-} Rule;
-
 typedef union {
 	uint16_t key; /* one of the TB_KEY_* constants */
 	uint32_t ch; /* unicode character */
@@ -142,7 +135,6 @@ static void mvfwd(const Arg *arg);
 static void mvtop(const Arg *arg);
 static void bkmrk(const Arg *arg);
 static int get_usrinput(char *, size_t, const char *, ...);
-static int frules(char *);
 static int spawn(const void *, size_t, const void *, size_t, char *, int);
 static int opnf(char *);
 static int fsev_init(void);
@@ -986,18 +978,6 @@ get_usrinput(char *result, size_t max_chars, const char *fmt, ...)
 }
 
 static int
-frules(char *ex)
-{
-	size_t c, d;
-
-	for (c = 0; c < LEN(rules); c++)
-		for (d = 0; d < rules[c].exlen; d++)
-			if (strncmp(rules[c].ext[d], ex, MAX_EXT) == 0)
-				return c;
-	return -1;
-}
-
-static int
 spawn(const void *com_argv, size_t com_argc, const void *f_argv, size_t f_argc,
 	char *fn, int waiting)
 {
@@ -1039,18 +1019,8 @@ spawn(const void *com_argv, size_t com_argc, const void *f_argv, size_t f_argc,
 static int
 opnf(char *fn)
 {
-	char *ex;
-	int c;
-
-	ex = get_ext(fn);
-	c = frules(ex);
-	free(ex);
-
-	if (c < 0) /* extension not found open in editor */
-		return spawn(editor, 1, NULL, 0, fn, Wait);
-	else
 		return spawn(
-			(char **)rules[c].v, rules[c].vlen, NULL, 0, fn, Wait);
+			(char **)plumber, LEN(plumber), NULL, 0, fn, Wait);
 }
 
 static int

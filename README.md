@@ -1,1 +1,1 @@
-My config of sfm, just made the repo to make installing again later easy, feel free to use anything from it.
+My config of sfm, just made the repo to make installing again later easy, feel free to use anything from it, uses sopen to open files.

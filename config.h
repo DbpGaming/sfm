@@ -37,33 +37,7 @@ static const size_t delconf_len = LEN(delconf);
 static const char root[]   = "/";
 
 /* software */
-static const char *videoplayer[]                    = { "mpv" };
-static const char *audioplayer[]                    = { "mpv" };
-static const char *imageviewer[]                   = { "sxiv" };
-static const char *browser[]                      = { "links" };
-static const char *bookreader[]                 = { "zathura" };
-static const char *nesemu[]                       = { "mesen" };
-static const char *snesemu[]                      = { "bsnes" };
-static const char *usereditor[]                     = { "vis" };
-
-/* extensions*/
-static const char *image[]                   = { "jpg", "png" };
-static const char *web[]                    = { "htm", "html" };
-static const char *book[]    = { "epub", "pdf", "cbz", "djvu" };
-static const char *video[]            = { "m4v", "mkv", "mp4" };
-static const char *audio[]                   = { "mp3", "flac"};
-static const char *nes[]                            = { "nes" };
-static const char *snes[]                           = { "sfc" };
-
-static Rule rules[] = {
-	{video,     LEN(video),     videoplayer, LEN(videoplayer) },
-	{audio,     LEN(audio),     audioplayer, LEN(audioplayer) },
-	{image,     LEN(image),     imageviewer, LEN(imageviewer) },
-	{web,       LEN(web),       browser,     LEN(browser)     },
-	{book,      LEN(book),      bookreader,  LEN(bookreader)  },
-	{nes,       LEN(nes),       nesemu,      LEN(nesemu)      },
-	{snes,      LEN(snes),      snesemu,     LEN(snesemu)     },
-};
+static const char *plumber[] = { "sopen" };
 
 /* normal keys */
 static Key nkeys[] = {
