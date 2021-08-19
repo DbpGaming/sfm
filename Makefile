@@ -19,9 +19,6 @@ options:
 
 ${OBJ}: config.h config.mk
 
-config.h:
-	cp config.def.h $@
-
 sfm: ${OBJ}
 	${CC} ${LDFLAGS} -o $@ ${OBJ}
 
