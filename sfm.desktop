@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Simple File Manager
+GenericName=File Manager
+Exec=sfm %F
+Terminal=true
+Categories=ConsoleOnly;
+Icon=sfm

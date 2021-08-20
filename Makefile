@@ -35,14 +35,16 @@ dist: clean
 
 install: sfm
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	cp -f sfm ${DESTDIR}${PREFIX}/bin
+	cp -f sfm ${DESTDIR}${PREFIX}/binrm -f
 	chmod 755 ${DESTDIR}${PREFIX}/bin/sfm
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < sfm.1 > ${DESTDIR}${MANPREFIX}/man1/sfm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/sfm.1
+	cp -f sfm.desktop $(DESTDIR)$(PREFIX)/share/applications/
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/sfm\
-		${DESTDIR}${MANPREFIX}/man1/sfm.1
+		${DESTDIR}${MANPREFIX}/man1/sfm.1\
+		$(DESTDIR)$(PREFIX)/share/applications/sfm.desktop
 
 .PHONY: all options clean dist install uninstall
