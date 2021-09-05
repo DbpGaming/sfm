@@ -4,23 +4,23 @@
 #define CONFIG_H
 
 /* colors                      fg,  bg */
-static const Cpair cdir    = { 31, 0 };
-static const Cpair cfile   = { 243, 0 };
-static const Cpair clnk    = { 96, 0 };
+static const Cpair cdir    = { 12, 0 };
+static const Cpair cfile   = { 15, 0 };
+static const Cpair clnk    = { 5, 0 };
 static const Cpair cblk    = { 95, 0 };
 static const Cpair cchr    = { 94, 0 };
 static const Cpair cifo    = { 93, 0 };
 static const Cpair csock   = { 92, 0 };
-static const Cpair cexec   = { 91, 0 };
+static const Cpair cexec   = { 13, 0 };
 static const Cpair cother  = { 90, 0 };
 
 static const Cpair cframe  = { 233, 233 };
-static const Cpair cpanell = { 166, 233 };
-static const Cpair cpanelr = { 5,   233 };
+static const Cpair cpanell = { 9, 233 };
+static const Cpair cpanelr = { 13,   233 };
 static const Cpair cerr    = { 124, 0 };
 static const Cpair cprompt = { 33,  0 };
-static const Cpair csearch = { 255, 0 };
-static const Cpair cstatus = { 243, 0 };
+static const Cpair csearch = { 4, 0 };
+static const Cpair cstatus = { 15, 0 };
 
 /* commands */
 static const char *rm_cmd[] = { "rm", "-rf" }; /* delete */

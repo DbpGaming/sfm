@@ -35,7 +35,7 @@ dist: clean
 
 install: sfm
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	cp -f sfm ${DESTDIR}${PREFIX}/binrm -f
+	cp -f sfm ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/sfm
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < sfm.1 > ${DESTDIR}${MANPREFIX}/man1/sfm.1
