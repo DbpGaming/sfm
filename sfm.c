@@ -146,6 +146,8 @@ static void toggle_df(const Arg *arg);
 static void start_filter(const Arg *arg);
 static void start_vmode(const Arg *arg);
 static void exit_vmode(const Arg *arg);
+static void start_change(const Arg *arg);
+static void exit_change(const Arg *arg);
 static void selup(const Arg *arg);
 static void seldwn(const Arg *arg);
 static void selall(const Arg *arg);
@@ -159,6 +161,9 @@ static void init_files(void);
 static void free_files(void);
 static void yank(const Arg *arg);
 static void rname(const Arg *arg);
+static void chngo(const Arg *arg);
+static void chngm(const Arg *arg);
+static void chngf(const Arg *arg);
 static void dupl(const Arg *arg);
 static void switch_pane(const Arg *arg);
 static void quit(const Arg *arg);
@@ -171,6 +176,7 @@ static int listdir(Pane *);
 static void t_resize(void);
 static void set_panes(void);
 static void draw_frame(void);
+static void refresh(const Arg *arg);
 static void start(void);
 
 /* global variables */
@@ -185,6 +191,7 @@ static int *sel_indexes;
 static size_t sel_len = 0;
 static char **sel_files;
 static int cont_vmode = 0;
+static int cont_change = 0;
 static pid_t fork_pid = 0, main_pid;
 #if defined(_SYS_INOTIFY_H)
 #define READEVSZ 16
@@ -1047,7 +1054,8 @@ addwatch(Pane *pane)
 #if defined(_SYS_INOTIFY_H)
 	return pane->inotify_wd = inotify_add_watch(inotify_fd, pane->dirn,
 		       IN_MODIFY | IN_MOVED_FROM | IN_MOVED_TO | IN_CREATE |
-			       IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF);
+			       IN_ATTRIB | IN_DELETE | IN_DELETE_SELF |
+			       IN_MOVE_SELF);
 #elif defined(_SYS_EVENT_H_)
 	pane->event_fd = open(pane->dirn, O_RDONLY);
 	if (pane->event_fd < 0)
@@ -1055,7 +1063,7 @@ addwatch(Pane *pane)
 	EV_SET(&evlist[pane->pane_id], pane->event_fd, EVFILT_VNODE,
 		EV_ADD | EV_CLEAR,
 		NOTE_DELETE | NOTE_EXTEND | NOTE_LINK | NOTE_RENAME |
-			NOTE_REVOKE | NOTE_WRITE,
+			NOTE_ATTRIB | NOTE_REVOKE | NOTE_WRITE,
 		0, NULL);
 	return 0;
 #endif
@@ -1183,6 +1191,35 @@ exit_vmode(const Arg *arg)
 	refresh_pane(cpane);
 	add_hi(cpane, cpane->hdir - 1);
 	cont_vmode = -1;
+}
+
+static void
+start_change(const Arg *arg)
+{
+	if (cpane->dirc < 1)
+		return;
+	struct tb_event fev;
+
+	cont_change = 0;
+	print_prompt("c [womf]");
+	tb_present();
+	while (tb_poll_event(&fev) != 0) {
+		switch (fev.type) {
+		case TB_EVENT_KEY:
+			grabkeys(&fev, ckeys, ckeyslen);
+			if (cont_change == -1)
+				return;
+			tb_present();
+			break;
+		}
+	}
+}
+
+static void
+exit_change(const Arg *arg)
+{
+	cont_change = -1;
+	print_info(cpane, NULL);
 }
 
 static void
@@ -1371,6 +1408,7 @@ rname(const Arg *arg)
 
 	if (get_usrinput(input_name, MAX_N, "rename: %s",
 		    basename(CURSOR(cpane).name)) < 0) {
+		exit_change(0);
 		free(input_name);
 		return;
 	}
@@ -1385,6 +1423,91 @@ rname(const Arg *arg)
 	PERROR(spawn(rename_cmd, 3, NULL, 0, NULL, DontWait) < 0);
 
 	free(input_name);
+	exit_change(0);
+}
+
+static void
+chngo(const Arg *arg)
+{
+	if (cpane->dirc < 1)
+		return;
+	char *input_og;
+	char *tmp[1];
+
+	input_og = ecalloc(MAX_N, sizeof(char));
+
+	if (get_usrinput(input_og, MAX_N, "OWNER:GROUP %s",
+		    basename(CURSOR(cpane).name)) < 0) {
+		exit_change(0);
+		free(input_og);
+		return;
+	}
+
+	tmp[0] = input_og;
+	if (spawn(chown_cmd, chown_cmd_len, tmp, 1, CURSOR(cpane).name,
+		    DontWait) < 0) {
+		print_error(strerror(errno));
+		return;
+	}
+
+	free(input_og);
+	exit_change(0);
+}
+
+static void
+chngm(const Arg *arg)
+{
+	if (cpane->dirc < 1)
+		return;
+	char *input_og;
+	char *tmp[1];
+
+	input_og = ecalloc(MAX_N, sizeof(char));
+
+	if (get_usrinput(input_og, MAX_N, "chmod %s",
+		    basename(CURSOR(cpane).name)) < 0) {
+		exit_change(0);
+		free(input_og);
+		return;
+	}
+
+	tmp[0] = input_og;
+	if (spawn(chmod_cmd, chmod_cmd_len, tmp, 1, CURSOR(cpane).name,
+		    DontWait) < 0) {
+		print_error(strerror(errno));
+		return;
+	}
+
+	free(input_og);
+	exit_change(0);
+}
+
+static void
+chngf(const Arg *arg)
+{
+	if (cpane->dirc < 1)
+		return;
+	char *input_og;
+	char *tmp[1];
+
+	input_og = ecalloc(MAX_N, sizeof(char));
+
+	if (get_usrinput(input_og, MAX_N, CHFLAG" %s",
+		    basename(CURSOR(cpane).name)) < 0) {
+		exit_change(0);
+		free(input_og);
+		return;
+	}
+
+	tmp[0] = input_og;
+	if (spawn(chflags_cmd, chflags_cmd_len, tmp, 1, CURSOR(cpane).name,
+		    DontWait) < 0) {
+		print_error(strerror(errno));
+		return;
+	}
+
+	free(input_og);
+	exit_change(0);
 }
 
 static void
@@ -1789,6 +1912,12 @@ start_signal(void)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	return sigaction(SIGUSR1, &sa, NULL);
+}
+
+static void
+refresh(const Arg *arg)
+{
+	kill(main_pid, SIGWINCH);
 }
 
 static void

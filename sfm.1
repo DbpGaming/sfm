@@ -64,7 +64,25 @@ paste
 move
 .TP
 .B c
+start change
+.TP
+.B cw
 rename
+.TP
+.B co
+change owner and group (chown)
+.TP
+.B cm
+change mode (chmod)
+.TP
+.B cf
+change flags (chflags | chattr)
+.TP
+.B cc
+exit change
+.TP
+.B cq
+exit change
 .TP
 .B .
 toggle dotfiles
@@ -83,6 +101,9 @@ exit filter
 .TP
 .B SPACE
 switch pane
+.TP
+.B ctrl+r
+refresh panes
 .SS Visual Mode
 .TP
 .B j
@@ -101,7 +122,7 @@ exit visual mode
 exit visual mode
 .TP
 .B ESC
-exit visual mode
+exit visual mode | change
 .SH CUSTOMIZATION
 sfm is customized by creating a custom
 .IR config.h
